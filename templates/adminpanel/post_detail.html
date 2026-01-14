@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin – Post Detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+        }
+
+        /* TOP BAR */
+        .top {
+            background: #1e293b;
+            padding: 16px 24px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* SIDEBAR */
+        .side {
+            width: 220px;
+            background: #020617;
+            padding: 16px;
+        }
+
+        .side a {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 12px 0;
+        }
+
+        .side a:hover {
+            color: #ffffff;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            padding: 24px;
+        }
+
+        .box {
+            background: #1e293b;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        /* COMMENTS */
+        .comment {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .comment-text {
+            flex: 1;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .flag-btn {
+            background: #f59e0b;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="top">
+    <div class="top-left">
+        <i class="fa fa-arrow-left" onclick="history.back()"></i>
+        <span style="margin-left:12px;">Post Details</span>
+    </div>
+</div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="side">
+        <a href="{% url 'admin_panel:dashboard' %}">Dashboard</a>
+        <a href="{% url 'admin_panel:users' %}">Users</a>
+        <a href="{% url 'admin_panel:flags' %}">Flagged</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- POST DETAILS -->
+        <div class="box">
+            <h2>{{ post.title }}</h2><br>
+            <p>{{ post.description }}</p><br>
+            <p><strong>By:</strong> {{ post.uploaded_by }}</p><br>
+
+            <form method="post" action="{% url 'admin_panel:delete_post' post.id %}">
+                {% csrf_token %}
+                <button class="delete-btn">Delete Post</button>
+            </form>
+        </div>
+
+        <!-- COMMENTS -->
+        <h3 style="margin-bottom:12px;">Comments</h3>
+
+        {% for comment in comments %}
+        <div class="box comment">
+            <div class="comment-text">
+                <strong>{{ comment.text }}</strong><br><br>
+                <small>{{ comment.user.username }} | {{ comment.created_at|date:"d M Y" }}
+</small>
+            </div>
+
+            <div class="comment-actions">
+                <form method="post" action="{% url 'admin_panel:delete_comment' comment.id %}">
+                    {% csrf_token %}
+                    <button class="delete-btn">Delete</button>
+                </form>
+
+                <form method="post" action="{% url 'admin_panel:flag_comment' comment.id %}">
+                    {% csrf_token %}
+                    <button class="flag-btn">Flag</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+            <div class="box">No comments available.</div>
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>

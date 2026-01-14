@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Pomegranate{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Common Auth Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Main Auth Layout -->
+    <div class="{% block container_class %}auth-container{% endblock %}">
+
+        <!-- Logo -->
+<!--        <div class="logo">-->
+<!--            <img src="{% static 'images/pome logo.png' %}" alt="Pomegranate Logo">-->
+<!--        </div>-->
+
+        <!-- Page Content -->
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

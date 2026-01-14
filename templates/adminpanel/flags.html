@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Flagged Content</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+        }
+
+        /* TOP BAR */
+        .top {
+            background: #1e293b;
+            padding: 16px 24px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* SIDEBAR */
+        .side {
+            width: 220px;
+            background: #020617;
+            padding: 16px;
+        }
+
+        .side a {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .side a:hover,
+        .side a.active {
+            color: #ffffff;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: #f87171;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-info {
+            max-width: 70%;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .card-meta {
+            font-size: 13px;
+            color: #cbd5f5;
+            margin-top: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .view-btn {
+            background: #38bdf8;
+            color: #000;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .empty {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: #334155;
+            margin: 24px 0;
+        }
+        /* TOP BAR */
+        .top-bar {
+            height: 64px;
+            background-color: #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 20px;
+        }
+
+        .top-bar span {
+            margin-left: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar" onclick="window.history.back()" style="cursor:pointer;">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Flagged Contents</span>
+</div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="side">
+        <a href="{% url 'admin_panel:dashboard' %}">Dashboard</a>
+        <a href="{% url 'admin_panel:posts' %}">Posts</a>
+        <a href="{% url 'admin_panel:users' %}">Users</a>
+        <a href="{% url 'admin_panel:flags' %}" class="active">Flagged</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- FLAGGED POSTS -->
+        <div class="section-title">🚩 Flagged Posts</div>
+
+        {% if flagged_posts %}
+            {% for post in flagged_posts %}
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">{{ post.title }}</div>
+                    <div class="card-meta">
+                        By {{ post.uploaded_by }} • {{ post.created_at|date:"Y-m-d" }}
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="{% url 'admin_panel:post_detail' post.id %}">
+                        <button class="view-btn">View</button>
+                    </a>
+                    <form method="post" action="{% url 'admin_panel:delete_post' post.id %}">
+                        {% csrf_token %}
+                        <button class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">No flagged posts.</div>
+        {% endif %}
+
+        <hr>
+
+        <!-- FLAGGED COMMENTS -->
+        <div class="section-title">🚩 Flagged Comments</div>
+
+        {% if flagged_comments %}
+            {% for comment in flagged_comments %}
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">
+                        {{ comment.text|truncatechars:80 }}
+                    </div>
+                    <div class="card-meta">
+                        {{ comment.user.username }} • {{ comment.created_at|date:"Y-m-d" }}
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <form method="post" action="{% url 'admin_panel:delete_comment' comment.id %}">
+                        {% csrf_token %}
+                        <button class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">No flagged comments.</div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

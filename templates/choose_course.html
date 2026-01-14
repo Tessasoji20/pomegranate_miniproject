@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Your Branch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* HARD RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #2f303a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* TOP RED BAR */
+        .top-bar {
+            width: 100%;
+            height: 64px;
+            background-color: #ff4b3a;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            padding-left: 32px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        /* GRID WRAPPER */
+        .page {
+            width: 100%;
+            height: calc(100vh - 64px);
+            padding: 32px;
+            background-color: #2f303a;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+            width: 100%;
+            height: 100%;
+            align-items: stretch;
+        }
+
+
+        /* CARD */
+        .card {
+            background-color: #ffffff;
+            border-radius: 6px;              /* small radius → grid tile look */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            border: none;
+            height: 350px;                   /* fixed height for grid tiles */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-bar">
+        Choose Your Branch
+    </div>
+
+    <!-- GRID -->
+    <div class="page">
+        <form method="post" id="courseForm">
+        {% csrf_token %}
+        <!-- ✅ HIDDEN FIELD -->
+        <input type="hidden" name="course" id="selectedCourse">
+        <div class="grid">
+            <!-- Replace these with Django loop if needed -->
+            {% for course in courses %}
+                <div
+                    class="card"
+                    data-course-id="{{ course.id }}"
+                    onclick="selectCourse('{{ course.id }}')">
+
+                    {{ course.code }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+        </form>
+    </div>
+<script>
+    function selectCourse(courseId) {
+        document.getElementById('selectedCourse').value = courseId;
+        document.getElementById('courseForm').submit();
+    }
+</script>
+
+</body>
+</html>

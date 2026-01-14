@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { margin:0; font-family:Arial; background:#0f172a; color:#fff; }
+        .top { background:#1e293b; padding:16px; font-size:20px; }
+        .layout { display:flex; }
+        .side { width:220px; background:#020617; height:100vh; padding:16px; }
+        .side a { display:block; color:#94a3b8; text-decoration:none; margin:12px 0; }
+        .side a:hover { color:#fff; }
+        .main { padding:24px; flex:1; }
+        .card { background:#1e293b; padding:20px; border-radius:12px; margin-bottom:16px; }
+    </style>
+</head>
+<body>
+
+<div class="top">Admin Dashboard</div>
+
+<div class="layout">
+    <div class="side">
+        <a href="{% url 'admin_panel:dashboard' %}">Dashboard</a>
+        <a href="{% url 'admin_panel:posts' %}">Posts</a>
+        <a href="{% url 'admin_panel:users' %}">Users</a>
+        <a href="{% url 'admin_panel:flags' %}">Flagged Content</a>
+    </div>
+
+    <div class="main">
+        <div class="card">Total Users: {{ user_count }}</div>
+        <div class="card">Total Posts: {{ post_count }}</div>
+        <div class="card">Total Comments: {{ comment_count }}</div>
+    </div>
+</div>
+
+</body>
+</html>

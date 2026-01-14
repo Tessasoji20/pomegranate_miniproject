@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resources</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+
+    <style>
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background-color: #ff4b3a;
+            color: #ffffff;
+            font-size: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #2f303a;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            height: 64px;
+            background-color: #ff4b3a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 22px;
+        }
+
+        .top-right i {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+
+        /* FILTER */
+        .filter-container {
+            padding: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* RESOURCE LIST */
+        .resource-list {
+            padding: 0 20px 20px;
+        }
+
+        .resource {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+        }
+
+        .resource:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+        }
+
+        .resource-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .resource-type {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+            text-transform: lowercase;
+        }
+
+
+        .resource-icon {
+            font-size: 20px;
+            color: #ff4b3a;
+        }
+
+        .empty {
+            padding: 20px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        .resource-icon a {
+            text-decoration: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .resource {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.resource-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 50px;
+}
+
+.resource-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.resource-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.resource-type {
+    font-size: 13px;
+    color: #777;
+    text-transform: lowercase;
+}
+
+.resource-icon {
+    font-size: 20px;
+    min-width: 32px;
+    text-align: right;
+}
+
+
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-left" onclick="window.history.back()" style="cursor:pointer;">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span style="margin-left:10px;">Results</span>
+    </div>
+
+    <div class="top-right">
+        <i class="fa-solid fa-rotate"
+           title="Refresh"
+           onclick="window.location.reload()"></i>
+
+        <i class="fa-solid fa-house"
+           title="Home"
+           onclick="window.location.href='{% url 'app:dashboard' %}'"></i>
+    </div>
+</div>
+
+
+<!-- FILTER DROPDOWN -->
+<div class="filter-container">
+    <form method="get">
+        <select name="type" onchange="this.form.submit()">
+            <option value="">All Resources</option>
+            <option value="youtube" {% if selected_type == 'youtube' %}selected{% endif %}>YouTube</option>
+            <option value="website" {% if selected_type == 'website' %}selected{% endif %}>Website</option>
+            <option value="textbook" {% if selected_type == 'textbook' %}selected{% endif %}>Textbook</option>
+            <option value="notes" {% if selected_type == 'notes' %}selected{% endif %}>Notes</option>
+        </select>
+    </form>
+</div>
+
+<!-- RESOURCE LIST -->
+<div class="resource-list">
+  {% for resource in resources %}
+<div class="resource"
+     onclick="window.location.href='{% url 'resources:resource_detail' resource.id %}'">
+
+    <div class="resource-left">
+        <span class="heart">❤️</span>
+        <span class="like-count">{{ resource.likes.count }}</span>
+    </div>
+
+    <div class="resource-center">
+        <div class="resource-title">{{ resource.title }}</div>
+        <div class="resource-type">{{ resource.get_resource_type_display|lower }}</div>
+    </div>
+
+    <div class="resource-icon">
+        {% if resource.link %}
+            <a href="{{ resource.link }}" class="text-light" target="_blank" onclick="event.stopPropagation();">
+                🔗
+            </a>
+        {% elif resource.file %}
+            <a href="{{ resource.file.url }}" class="text-light"  download onclick="event.stopPropagation();">
+                🔗
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+<a href="{% url 'resources:add_resource' module.id %}" class="fab">+</a>
+
+<script>
+    function openResource(type, link, fileUrl) {
+        if (type === 'youtube' || type === 'website') {
+            if (link) {
+                window.open(link, '_blank');
+            }
+        } else {
+            if (fileUrl) {
+                window.location.href = fileUrl;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

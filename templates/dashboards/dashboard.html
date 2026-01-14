@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #2f303a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* TOP NAVBAR */
+        .navbar {
+            height: 64px;
+            background-color: #ff4b3a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 18px;
+            font-size: 18px;
+        }
+
+        .navbar i {
+            cursor: pointer;
+        }
+
+        /* PAGE CONTENT */
+        .container {
+            padding: 28px;
+        }
+
+        /* WELCOME SECTION */
+        .welcome {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .welcome img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .welcome-text h2 {
+            color: #ff4b3a;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .welcome-text p {
+            font-size: 18px;
+            color: #ff6b6b;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #555;
+            margin: 18px 0 28px;
+        }
+
+        /* SELECT SUBJECT BUTTON */
+        .select-subject {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 18px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            margin-bottom: 36px;
+        }
+
+        .select-subject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }
+
+        /* SAVED POSTS */
+        .saved-title {
+            color: #ff4b3a;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .saved-card {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .saved-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .saved-left i {
+            color: #ff4b3a;
+            font-size: 22px;
+        }
+
+        .saved-text h4 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .saved-text span {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .saved-right i {
+            font-size: 18px;
+            color: #777;
+            cursor: pointer;
+        }
+        .section-title {
+    color: #ff4b3a;
+    font-size: 22px;
+    margin: 20px 20px 10px;
+}
+
+.saved-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 20px;
+}
+
+.saved-card {
+    background: #ffffff;
+    color: #000;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+}
+
+.saved-left i {
+    color: #ff4b3a;
+    font-size: 18px;
+}
+
+.saved-center {
+    flex: 1;
+}
+
+.saved-title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.saved-type {
+    font-size: 13px;
+    color: #777;
+}
+
+.saved-right i {
+    color: #777;
+}
+
+.empty-text {
+    margin: 0 20px;
+    color: #aaa;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left" onclick="window.location.href='{% url 'app:profile' %}'">
+        <i class="fa-solid fa-user"></i>
+        <span>Home</span>
+    </div>
+
+    <div class="navbar-right">
+         <i
+            class="fa-solid fa-right-from-bracket"
+            title="Logout"
+            style="cursor:pointer;"
+            onclick="window.location.href='{% url 'app:userlogout' %}'">
+        </i>
+        <i
+            class="fa-solid fa-rotate"
+            title="Refresh"
+            style="cursor:pointer;"
+            onclick="window.location.reload();">
+        </i>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <!-- WELCOME -->
+    <div class="welcome">
+        <img src="{% static 'images/pome logo.png' %}" alt="logo" width="200px" height="300px">
+        <div class="welcome-text">
+            <h2>Welcome</h2>
+            <p>{{ request.user.username }}</p>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SELECT SUBJECT -->
+    <div
+        class="select-subject"
+        onclick="window.location.href='{% url 'app:select_subject' %}'"
+    >
+        SELECT SUBJECT
+    </div>
+
+    <!-- SAVED POSTS -->
+    <div class="saved-title"><h2>Saved Posts</h2></div>
+
+    {% if saved_posts %}
+    <div class="saved-posts">
+        {% for resource in saved_posts %}
+            <a href="{% url 'resources:resource_detail' resource.id %}"
+               class="saved-card">
+
+                <div class="saved-left">
+                    <i class="fa-solid fa-bookmark"></i>
+                </div>
+
+                <div class="saved-center">
+                    <div class="saved-title">{{ resource.title }}</div>
+                    <div class="saved-type">
+                        {{ resource.get_resource_type_display|lower }}
+                    </div>
+                </div>
+
+                <div class="saved-right">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty-text">No saved posts yet.</p>
+{% endif %}
+
+</div>
+
+</body>
+</html>

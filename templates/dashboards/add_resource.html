@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #2f303a;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            height: 64px;
+            background-color: #ff4b3a;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .top-bar i {
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /* CARD */
+        .card {
+            background-color: #ffffff;
+            margin: 20px;
+            padding: 24px;
+            border-radius: 18px;
+        }
+
+        /* FORM FIELDS */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid #bbb;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .form-group select {
+            background-color: #fff;
+        }
+
+        /* UPLOAD BUTTON */
+        .upload-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 26px;
+            background-color: #ff4b3a;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ERROR */
+        .error {
+            color: red;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <i class="fa-solid fa-arrow-left" onclick="history.back()"></i>
+    <span>New Post</span>
+</div>
+
+<!-- FORM CARD -->
+<div class="card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            {{ form.description }}
+        </div>
+
+        <div class="form-group">
+            {{ form.link }}
+        </div>
+
+        <div class="form-group">
+            {{ form.resource_type }}
+        </div>
+
+        <div class="form-group">
+            {{ form.file }}
+        </div>
+
+        <button type="submit" class="upload-btn">Upload</button>
+    </form>
+</div>
+
+</body>
+</html>

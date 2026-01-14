@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | Pomegranate{% endblock %}
+{% block extra_css %}
+<style>
+    * {
+    box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background-color: #2f303a;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 700px;
+        padding: 40px;
+        color: #ffffff;
+    }
+
+    /* MUCH BIGGER LOGO */
+    .auth-logo {
+        width: 220px;           /* increase if needed */
+        height: auto;
+        display: block;
+        margin: 0 auto 30px;
+    }
+
+    .auth-title {
+        text-align: center;
+        color: #ff4b4b;
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 18px;
+    }
+
+    .input-group i.icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #bdbdbd;
+        font-size: 18px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        background: transparent;
+        border: 1px solid #777;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 15px;
+    }
+
+    .input-group input::placeholder {
+        color: #aaaaaa;
+    }
+
+    .terms {
+        font-size: 14px;
+        margin: 20px 0;
+        color: #dddddd;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 14px 45px;   /* MATCH input horizontal padding */
+        border: none;
+        border-radius: 30px;
+        background: #ff4b4b;
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+}
+
+
+    .btn-auth:hover {
+        background: #ff3a3a;
+    }
+    .auth-footer {
+    margin-top: 25px;          /* space above the whole line */
+    text-align: center;
+    font-size: 15px;
+    color: #dddddd;
+}
+
+.auth-footer .register-link {
+    color: #ffffff;            /* white link */
+    font-weight: 500;
+    margin-left: 6px;          /* spacing after '?' */
+    text-decoration: none;
+}
+
+.auth-footer .register-link:hover {
+    text-decoration: underline;
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <img src="{% static 'images/pome logo.png' %}" class="auth-logo" alt="Logo">
+
+        <h2 class="auth-title">Welcome back!</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="input-group">
+                <i class="fa-solid fa-user icon"></i>
+                {{ form.username }}
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock icon"></i>
+                {{ form.password }}
+
+            </div>
+
+            <button type="submit" class="btn-auth">Login</button>
+        </form>
+
+        <div class="auth-footer mt-4">
+            New here ?
+            <a href="{% url 'app:register' %}" class="register-link">
+                Get Registered Now!!
+            </a>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

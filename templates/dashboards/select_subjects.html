@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Your Subject</title>
+     <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #2f303a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .top-bar {
+            height: 64px;
+            background: #ff4b3a;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .subject-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .subject-card:hover {
+            transform: scale(1.01);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-bar" onclick="window.history.back()" style="cursor:pointer;">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span style="margin-left:12px;">Choose Your Subject</span>
+    </div>
+
+
+    <!-- SUBJECT LIST -->
+    <div class="container">
+        {% for subject in subjects %}
+            <div class="subject-card"
+                 onclick="window.location.href='{% url 'app:choose_module' subject.id %}'">
+                 {{ subject.name|upper }}
+            </div>
+        {% empty %}
+            <p style="color:white;">No subjects found.</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

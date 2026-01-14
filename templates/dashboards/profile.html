@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #2f303a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            height: 64px;
+            background-color: #ff4b3a;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 20px;
+        }
+
+        .top-bar span {
+            margin-left: 12px;
+        }
+
+        /* CONTENT */
+        .container {
+            padding: 28px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .name {
+            font-size: 30px;
+            color: #ff4b3a;
+            font-weight: 600;
+        }
+
+        .email {
+            font-size: 18px;
+            color: #ff6b6b;
+            margin-top: 6px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #555;
+            margin: 24px 0;
+        }
+
+        .info {
+            font-size: 18px;
+            color: #ff6b6b;
+            line-height: 28px;
+        }
+
+        .section-title {
+            color: #ff4b3a;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+
+        /* UPLOADED POSTS */
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .post-card {
+            background-color: #ffffff;
+            color: #000;
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .post-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .post-type {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .empty-text {
+            color: #aaa;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar" onclick="window.history.back()" style="cursor:pointer;">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Profile</span>
+</div>
+
+<div class="container">
+
+    <!-- USER INFO -->
+    <div class="center">
+        <div class="name">{{ user.username }}</div>
+        <div class="email">{{ user.email }}</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- COURSE INFO -->
+    <div class="center info">
+        Branch: {{ profile.course.code }}<br>
+        Semester: {{ profile.semester.number }}
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- UPLOADED POSTS -->
+    <div class="section-title">Uploaded Posts</div>
+
+    {% if uploaded_posts %}
+        <div class="posts">
+            {% for resource in uploaded_posts %}
+                <a
+                    href="{% url 'resources:resource_detail' resource.id %}"
+                    class="post-card"
+                >
+                    <div class="post-title">{{ resource.title }}</div>
+                    <div class="post-type">
+                        {{ resource.get_resource_type_display|lower }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-text">You haven’t uploaded any posts yet.</div>
+    {% endif %}
+
+    <div class="divider"></div>
+
+    <!-- OTHER OPTIONS -->
+    <div class="section-title">More Options</div>
+
+    <div
+        class="post-card"
+        onclick="window.location.href='{% url 'app:choose_course' %}'"
+        style="cursor:pointer;"
+    >
+        Change Branch and Semester
+    </div>
+
+</div>
+
+</body>
+</html>

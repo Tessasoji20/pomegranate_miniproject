@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register | Pomegranate{% endblock %}
+
+{% block extra_css %}
+<style>
+    * {
+    box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background-color: #2f303a;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 700px;
+        padding: 40px;
+        color: #ffffff;
+    }
+
+    /* MUCH BIGGER LOGO */
+    .auth-logo {
+        width: 220px;           /* increase if needed */
+        height: auto;
+        display: block;
+        margin: 0 auto 30px;
+    }
+
+    .auth-title {
+        text-align: center;
+        color: #ff4b4b;
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 18px;
+    }
+
+    .input-group i.icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #bdbdbd;
+        font-size: 18px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        background: transparent;
+        border: 1px solid #777;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 15px;
+    }
+
+    .input-group input::placeholder {
+        color: #aaaaaa;
+    }
+
+    .terms {
+        font-size: 14px;
+        margin: 20px 0;
+        color: #dddddd;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 14px 45px;   /* MATCH input horizontal padding */
+        border: none;
+        border-radius: 30px;
+        background: #ff4b4b;
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+}
+
+
+    .btn-auth:hover {
+        background: #ff3a3a;
+    }
+    .email-helper {
+    display: block;
+    margin-top: 3px;        /* LESS space above */
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #ff4b4b;         /* SAME RED as buttons */
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <img src="{% static 'images/pome logo.png' %}" class="auth-logo" alt="Pomegranate Logo">
+
+        <h2 class="auth-title">
+            <i class="fa-solid fa-handshake"></i>
+            &nbsp; Welcome!
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <i class="fa-regular fa-envelope icon"></i>
+                {{ form.email }}
+            </div>
+
+            <small class="email-helper text-danger mt-1">
+                Only @rajagiri.edu.in email addresses are permitted.
+            </small>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock icon"></i>
+                {{ form.password }}
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock icon"></i>
+                {{ form.confirm_password }}
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-user icon"></i>
+                {{ form.username }}
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" required>
+                By creating account, I agree to Terms & Conditions and Privacy Policy.
+            </div>
+
+                <button type="submit" class="btn-auth">Sign Up</button>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
